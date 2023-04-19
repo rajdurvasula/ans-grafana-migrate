@@ -1,0 +1,22 @@
+[
+    {
+        "access": "proxy",
+        "basicAuth": false,
+        "database": "",
+        "id": 1,
+        "isDefault": true,
+        "jsonData": {
+            "authType": "default",
+            "defaultRegion": "ap-southeast-1"
+        },
+        "name": "CloudWatch",
+        "orgId": 1,
+        "readOnly": false,
+        "type": "cloudwatch",
+        "typeLogoUrl": "public/app/plugins/datasource/cloudwatch/img/amazon-web-services.png",
+        "typeName": "CloudWatch",
+        "uid": "LLpC32P4k",
+        "url": "",
+        "user": ""
+    }
+]

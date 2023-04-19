@@ -1,0 +1,19 @@
+---
+- name: prepare WIP datasources json
+  block:
+    - name: create WIP folder for datasources json
+      file:
+        path: "{{ migration.wip_dir }}/datasources.json"
+        state: touch
+    - name: initialize datasources json
+      copy:
+        content: '[]'
+        dest: "{{ migration.wip_dir }}/datasources.json"
+
+- name: migrate a datasource
+  include_tasks:
+    file: migrate_datasource.yaml
+  vars:
+    datasource: "{{ item }}"
+  with_items: "{{ datasources }}"
+

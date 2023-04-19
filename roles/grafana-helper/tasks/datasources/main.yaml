@@ -1,0 +1,29 @@
+---
+- name: Make headers
+  set_fact:
+    headers: "{{ dict([[ 'Authorization', 'Bearer {{ grafana_dev.api_key }}' ], [ 'Accept', 'application/json' ] ]) }}"
+
+- name: Print headers
+  debug:
+    msg: "{{ headers }}"
+
+- name: Create datasources dir
+  file:
+    path: datasources
+    state: directory
+
+- name: Get datasources from grafana_dev
+  get_url:
+    url: "{{ grafana_dev.base_url }}/api/datasources"
+    headers: "{{ headers }}"
+    dest: datasources/datasources.json
+
+- name: Read JSON for pretty printing
+  set_fact:
+    ds_json: "{{ lookup('file', 'datasources/datasources.json') | from_json }}"
+
+- name: Pretty print JSON
+  copy:
+    content: "{{ ds_json | to_nice_json }}"
+    dest: datasources/datasources.json
+

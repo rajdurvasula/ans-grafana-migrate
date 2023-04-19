@@ -1,0 +1,9 @@
+---
+- name: Test Grafana Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: include role
+      include_role:
+        name: grafana-helper

@@ -1,0 +1,25 @@
+[
+    {
+        "access": "proxy",
+        "basicAuth": false,
+        "basicAuthUser": "",
+        "database": "",
+        "id": 9,
+        "isDefault": true,
+        "jsonData": {
+            "authType": "default",
+            "defaultRegion": "ap-southeast-1"
+        },
+        "name": "CloudWatch",
+        "orgId": 1,
+        "readOnly": false,
+        "secureJsonFields": {},
+        "type": "cloudwatch",
+        "typeLogoUrl": "",
+        "uid": "3Ar5cTP4k",
+        "url": "",
+        "user": "",
+        "version": 1,
+        "withCredentials": false
+    }
+]

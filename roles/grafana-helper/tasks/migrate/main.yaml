@@ -1,0 +1,10 @@
+---
+- name: load datasources
+  set_fact:
+    ds_json: "{{ lookup('file', 'datasources/datasources.json') | from_json }}"
+
+- name: include migrate_datasources task
+  include_tasks:
+    file: migrate_datasources.yaml
+  vars:
+    datasources: "{{ ds_json }}"

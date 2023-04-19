@@ -1,0 +1,177 @@
+[
+    {
+        "annotations": {
+            "description": "EC2 Instance CPU utilisation exceeded {{ $values.B.Value }}",
+            "summary": "EC2 Instance CPU is High"
+        },
+        "condition": "C",
+        "data": [
+            {
+                "datasourceUid": "LLpC32P4k",
+                "model": {
+                    "dimensions": {},
+                    "expression": "",
+                    "hide": false,
+                    "id": "",
+                    "intervalMs": 1000,
+                    "label": "",
+                    "logGroups": [],
+                    "matchExact": true,
+                    "maxDataPoints": 43200,
+                    "metricEditorMode": 0,
+                    "metricName": "",
+                    "metricQueryType": 1,
+                    "namespace": "AWS/EC2",
+                    "period": "",
+                    "queryMode": "Metrics",
+                    "refId": "A",
+                    "region": "default",
+                    "sql": {
+                        "from": {
+                            "name": "SCHEMA",
+                            "parameters": [
+                                {
+                                    "name": "AWS/EC2",
+                                    "type": "functionParameter"
+                                },
+                                {
+                                    "name": "InstanceId",
+                                    "type": "functionParameter"
+                                }
+                            ],
+                            "type": "function"
+                        },
+                        "groupBy": {
+                            "expressions": [
+                                {
+                                    "property": {
+                                        "name": "InstanceId",
+                                        "type": "string"
+                                    },
+                                    "type": "groupBy"
+                                }
+                            ],
+                            "type": "and"
+                        },
+                        "select": {
+                            "name": "AVG",
+                            "parameters": [
+                                {
+                                    "name": "CPUUtilization",
+                                    "type": "functionParameter"
+                                }
+                            ],
+                            "type": "function"
+                        }
+                    },
+                    "sqlExpression": "SELECT AVG(CPUUtilization) FROM SCHEMA(\"AWS/EC2\", InstanceId) GROUP BY InstanceId",
+                    "statistic": "Average"
+                },
+                "queryType": "",
+                "refId": "A",
+                "relativeTimeRange": {
+                    "from": 600,
+                    "to": 0
+                }
+            },
+            {
+                "datasourceUid": "__expr__",
+                "model": {
+                    "conditions": [
+                        {
+                            "evaluator": {
+                                "params": [],
+                                "type": "gt"
+                            },
+                            "operator": {
+                                "type": "and"
+                            },
+                            "query": {
+                                "params": [
+                                    "B"
+                                ]
+                            },
+                            "reducer": {
+                                "params": [],
+                                "type": "last"
+                            },
+                            "type": "query"
+                        }
+                    ],
+                    "datasource": {
+                        "type": "__expr__",
+                        "uid": "__expr__"
+                    },
+                    "expression": "A",
+                    "hide": false,
+                    "intervalMs": 1000,
+                    "maxDataPoints": 43200,
+                    "reducer": "last",
+                    "refId": "B",
+                    "type": "reduce"
+                },
+                "queryType": "",
+                "refId": "B",
+                "relativeTimeRange": {
+                    "from": 600,
+                    "to": 0
+                }
+            },
+            {
+                "datasourceUid": "__expr__",
+                "model": {
+                    "conditions": [
+                        {
+                            "evaluator": {
+                                "params": [
+                                    60
+                                ],
+                                "type": "gt"
+                            },
+                            "operator": {
+                                "type": "and"
+                            },
+                            "query": {
+                                "params": [
+                                    "C"
+                                ]
+                            },
+                            "reducer": {
+                                "params": [],
+                                "type": "last"
+                            },
+                            "type": "query"
+                        }
+                    ],
+                    "datasource": {
+                        "type": "__expr__",
+                        "uid": "__expr__"
+                    },
+                    "expression": "B",
+                    "hide": false,
+                    "intervalMs": 1000,
+                    "maxDataPoints": 43200,
+                    "refId": "C",
+                    "type": "threshold"
+                },
+                "queryType": "",
+                "refId": "C",
+                "relativeTimeRange": {
+                    "from": 600,
+                    "to": 0
+                }
+            }
+        ],
+        "execErrState": "Error",
+        "folderUID": "nBkR62PVk",
+        "for": "5m",
+        "id": 1,
+        "isPaused": false,
+        "noDataState": "NoData",
+        "orgID": 1,
+        "ruleGroup": "critical-alerts",
+        "title": "ec2.cpu_high",
+        "uid": "3ZQTehEVk",
+        "updated": "2023-04-19T07:38:55Z"
+    }
+]

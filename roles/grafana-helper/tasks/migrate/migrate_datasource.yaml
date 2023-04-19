@@ -1,0 +1,31 @@
+---
+- name: initialise datasource
+  set_fact:
+    init_ds: "{{ init_ds | default({}) | combine({ item.key: item.value }) }}"
+  when:
+    - item.key != "id"
+    - item.key != "uid"
+  with_dict: "{{ datasource }}"
+
+- name: create datasource
+  uri:
+    url: "{{ grafana_test.base_url }}/api/datasources"
+    method: POST
+    return_content: yes
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+      Authorization: "Bearer {{ grafana_test.api_key }}"
+    body: "{{ init_ds }}"
+  register: ds_result
+
+- name: read json from WIP datasources
+  set_fact:
+    wip_ds_json: "{{ wip_ds_json|default([]) + lookup('file', '{{ migration.wip_dir }}/datasources.json') | from_json + [ ds_result.json | community.general.json_query('datasource') ] }}"
+
+- name: write to WIP datasources
+  copy:
+    content: "{{ wip_ds_json | to_nice_json }}"
+    dest: "{{ migration.wip_dir }}/datasources.json"
+

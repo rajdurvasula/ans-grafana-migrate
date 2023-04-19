@@ -1,0 +1,8 @@
+---
+- name: Process Dashboards
+  include_tasks:
+    file: process_dashboard.yaml
+  vars:
+    dashboard_file: "dashboards/{{ item.folderTitle }}/{{ item.url.split('/')[-1] | lower | replace(' ', '-') }}.json"
+  when: item.folderTitle is defined
+  with_items: "{{ grafana_dashboards }}"

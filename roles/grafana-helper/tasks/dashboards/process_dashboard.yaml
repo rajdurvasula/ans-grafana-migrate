@@ -1,0 +1,25 @@
+---
+- name: Read dashboard json
+  set_fact:
+    dashboard_json: "{{ lookup('file', '{{ dashboard_file }}') }}"
+
+- name: print dashboard json
+  debug:
+    msg: "{{ dashboard_json }}"
+  when: 0 > 1
+
+- name: Extract dashboard content
+  set_fact:
+    dashboard_content: "{{ dashboard_json | community.general.json_query('dashboard') }}"
+
+- name: Create folders to store dashboard
+  file:
+    path: "{{ migration.wip_dir }}/{{ dashboard_file | dirname }}"
+    state: directory
+    recurse: true
+
+- name: Write dashboard content WIP dir
+  copy:
+    content: "{{ dashboard_content | to_nice_json }}"
+    dest: "{{ migration.wip_dir }}/{{ dashboard_file }}"
+

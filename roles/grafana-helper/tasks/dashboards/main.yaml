@@ -1,0 +1,28 @@
+---
+# tasks file for grafana-helper  
+- name: Create dashboards folder
+  file:
+    name: dashboards
+    state: directory
+
+- name: Create folders
+  file:
+    name: "dashboards/{{ item.folderTitle }}"
+    state: directory
+  when: item.folderTitle is defined
+  with_items: "{{ grafana_dashboards }}"
+
+- name: Export grafana_dev dashboards
+  community.grafana.grafana_dashboard:
+    grafana_url: "{{ grafana_dev.base_url }}"
+    grafana_api_key: "{{ grafana_dev.api_key }}"
+    org_id: 1
+    uid: "{{ item.uid }}"
+    state: export
+    validate_certs: false
+    use_proxy: false
+    path: "dashboards/{{ item.folderTitle }}/{{ item.url.split('/')[-1] | lower | replace(' ', '-') }}.json"
+  when: item.folderTitle is defined
+  with_items: "{{ grafana_dashboards }}"
+
+

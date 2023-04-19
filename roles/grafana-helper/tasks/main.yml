@@ -1,0 +1,5 @@
+---
+# tasks file for grafana-helper
+- name: include migrate task
+  include_tasks:
+    file: migrate/main.yaml

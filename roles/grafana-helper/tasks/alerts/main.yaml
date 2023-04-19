@@ -1,0 +1,29 @@
+---
+- name: Make headers
+  set_fact:
+    headers: "{{ dict([[ 'Authorization', 'Bearer {{ grafana_dev.api_key }}' ], [ 'Accept', 'application/json' ] ]) }}"
+
+- name: Print headers
+  debug:
+    msg: "{{ headers }}"
+
+- name: Create alerts dir
+  file:
+    path: alerts
+    state: directory
+
+- name: Get alerts from grafana_dev
+  get_url:
+    url: "{{ grafana_dev.base_url }}/api/v1/provisioning/alert-rules"
+    headers: "{{ headers }}"
+    dest: alerts/alerts.json
+
+- name: Read JSON for pretty printing
+  set_fact:
+    alerts_json: "{{ lookup('file', 'alerts/alerts.json') | from_json }}"
+
+- name: Pretty print JSON
+  copy:
+    content: "{{ alerts_json | to_nice_json }}"
+    dest: alerts/alerts.json
+

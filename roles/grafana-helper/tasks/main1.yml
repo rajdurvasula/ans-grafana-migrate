@@ -1,0 +1,36 @@
+---
+# tasks file for grafana-helper
+- name: Lookup Dashboards in grafana_dev
+  set_fact:
+    grafana_dashboards: "{{ lookup('grafana_dashboard', 'grafana_url={{ grafana_dev.base_url }} grafana_api_key={{ grafana_dev.api_key }}') }}"
+
+- name: Print grafana_dev dashboards
+  debug:
+    msg: "{{ grafana_dashboards }}"
+
+- name: Create migrate folder
+  file:
+    path: "{{ migration.root_dir }}"
+    state: directory
+
+- name: Create WIP folder
+  file:
+    path: "{{ migration.wip_dir }}"
+    state: directory
+
+- name: include datasources task
+  include_tasks:
+    file: datasources/main.yaml
+
+- name: include dashboards task
+  include_tasks:
+    file: dashboards/main.yaml
+
+- name: include process_dashboards task
+  include_tasks:
+    file: dashboards/process_dashboards.yaml
+
+- name: include alerts task
+  include_tasks:
+    file: alerts/main.yaml
+
